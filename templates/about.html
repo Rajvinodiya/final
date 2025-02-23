@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+        <h2 class="h3 mb-4">Technical Implementation</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="h5">System Architecture</h3>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="bi bi-cpu me-2"></i>
+                                NLP Models:
+                                <ul class="mt-2">
+                                    <li>Sentiment: RoBERTa-base (cardiffnlp)</li>
+                                    <li>Emotion: RoBERTa-base-go-emotions</li>
+
+                                </ul>
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-database me-2"></i>
+                                Data Handling:
+                                <ul class="mt-2">
+                                    <li>Text inputs truncated to 500 characters</li>
+                                    <li>Analysis history stored per user</li>
+                                    <li>Secure password hashing (PBKDF2-SHA256)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="h5">Capabilities & Limitations</h3>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between">
+                                    <span>Supported Content</span>
+                                </div>
+                                <ul class="mt-2 mb-0">
+                                    <li>English text only</li>
+                                    <li>Short-form content analysis</li>
+                                    <li>Maximum 500 characters</li>
+                                </ul>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between">
+                                    <span>Privacy Features</span>
+                                </div>
+                                <ul class="mt-2 mb-0">
+                                    <li>No third-party data sharing</li>
+                                    <li>User-specific analysis history</li>
+                                    <li>Secure session management</li>
+                                </ul>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between">
+                                    <span>Analysis Speed</span>
+                                    <span class="badge bg-primary">~1-3 seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

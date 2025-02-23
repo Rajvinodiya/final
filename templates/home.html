@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero-section text-center py-5 mb-5">
+        <div class="bg-glass rounded-4 p-5 shadow">
+            <h1 class="display-4 fw-bold mb-4">Understand Your Text's Emotional Signature</h1>
+            <p class="lead mb-5 opacity-75">Advanced AI-powered analysis of sentiment and emotional context in any English text</p>
+            <div class="cta-buttons">
+                <a href="/analysis" class="btn btn-primary btn-lg px-5 py-3">
+                    <i class="bi bi-magic me-2"></i>Start Analyzing
+                </a>
+            </div>
+            <div class="mt-4 text-muted">
+                <small><i class="bi bi-shield-lock me-1"></i>Private & Secure Analysis</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Value Proposition -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card bg-glass border-0 h-100 shadow">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <i class="bi bi-graph-up-arrow display-6 text-primary"></i>
+                        <div>
+                            <h3 class="h5 mb-0">Real-time Emotional Insights</h3>
+                            <p class="text-muted mb-0">Instant analysis with contextual understanding</p>
+                        </div>
+                    </div>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>28 distinct emotions detection</li>
+                        <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Sentiment confidence scoring</li>
+                        <li><i class="bi bi-check-circle text-success me-2"></i>Historical analysis tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-glass border-0 h-100 shadow">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <i class="bi bi-lightning-charge display-6 text-warning"></i>
+                        <div>
+                            <h3 class="h5 mb-0">Powered by Advanced AI</h3>
+                            <p class="text-muted mb-0">State-of-the-art NLP models</p>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="bg-dark text-white rounded-3 p-3 text-center">
+                                <div class="h6 mb-0">RoBERTa</div>
+                                <small class="text-muted">Foundation Model</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="bg-primary text-white rounded-3 p-3 text-center">
+                                <div class="h6 mb-0">Transformers</div>
+                                <small class="text-light">Architecture</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="features-section py-5">
+        <h2 class="text-center mb-5 h2">Key Features</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100 shadow border-0">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper bg-primary text-white rounded-3 p-3 mb-3">
+                            <i class="bi bi-activity display-6"></i>
+                        </div>
+                        <h3 class="h5">Real-time Analysis</h3>
+                        <p class="text-muted">Get instant results with our optimized processing pipeline. Average response time under 2 seconds.</p>
+                        <div class="mt-auto">
+                            <a href="/analysis" class="btn btn-outline-primary btn-sm">
+                                Try Now <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card h-100 shadow border-0">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper bg-success text-white rounded-3 p-3 mb-3">
+                            <i class="bi bi-clock-history display-6"></i>
+                        </div>
+                        <h3 class="h5">Analysis History</h3>
+                        <p class="text-muted">Track your previous analyses with detailed timelines and comparison tools.</p>
+                        <div class="mt-auto">
+                            <a href="/history" class="btn btn-outline-success btn-sm">
+                                View History <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card h-100 shadow border-0">
+                    <div class="card-body p-4">
+                        <div class="icon-wrapper bg-info text-white rounded-3 p-3 mb-3">
+                            <i class="bi bi-shield-lock display-6"></i>
+                        </div>
+                        <h3 class="h5">Secure & Private</h3>
+                        <p class="text-muted">Military-grade encryption and strict data privacy policies.</p>
+                        <div class="mt-auto">
+                            <a href="/about" class="btn btn-outline-info btn-sm">
+                                Learn More <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section text-center py-5 my-5 bg-glass rounded-4 shadow">
+        <div class="p-4">
+            <h2 class="h1 mb-4">Start Analyzing Now</h2>
+            <p class="lead mb-5 opacity-75">Join thousands of users gaining insights into their text content</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/analysis" class="btn btn-primary btn-lg px-5 py-3">
+                    <i class="bi bi-rocket-takeoff me-2"></i>Get Started
+                </a>
+                <a href="/about" class="btn btn-outline-dark btn-lg px-5 py-3">
+                    <i class="bi bi-info-circle me-2"></i>Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

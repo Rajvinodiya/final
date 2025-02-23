@@ -1,0 +1,254 @@
+/* style.css */
+:root {
+    --primary: #5E35B1;  /* Updated navbar color (deep purple) */
+    --primary-hover: #4527A0;
+    --secondary: #6c757d;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --navbar-bg: #1A237E;  /* New navy blue for better contrast */
+    --navbar-text: #ffffff;
+    --success: #28a745;
+    --danger: #dc3545;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-bs-theme="dark"] {
+    --light: #2d3339;
+    --dark: #f8f9fa;
+    --navbar-bg: #0D47A1;  /* Dark mode navbar color */
+}
+
+/* Base Styles */
+body {
+    background-color: var(--light);
+    color: var(--dark);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--navbar-bg) !important;
+    padding: 0.8rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(8px);
+}
+
+.navbar-brand,
+.nav-link {
+    color: var(--navbar-text) !important;
+}
+
+.navbar-toggler {
+    border-color: rgba(var(--navbar-text), 0.1);
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+    color: var(--light);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: var(--shadow-md);
+    background: var(--light);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.bg-glass {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-bs-theme="dark"] .bg-glass {
+    background: rgba(45, 51, 57, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Analysis Components */
+.analysis-textarea {
+    min-height: 160px;
+    border-radius: 12px;
+    padding: 1.2rem;
+    resize: none;
+    border: 2px solid var(--secondary);
+    transition: var(--transition);
+}
+
+.analysis-textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.15);
+}
+
+.emotion-row {
+    background: rgba(var(--primary), 0.05);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+    border-left: 4px solid transparent;
+}
+
+.emotion-row:hover {
+    transform: translateX(8px);
+    background: rgba(var(--primary), 0.1);
+    border-left-color: var(--primary);
+}
+
+/* Badges */
+.badge {
+    padding: 0.5em 0.8em;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.bg-purple {
+    background-color: var(--primary) !important;
+}
+
+.bg-success {
+    background-color: var(--success) !important;
+}
+
+.bg-danger {
+    background-color: var(--danger) !important;
+}
+
+/* History Items */
+.history-entry {
+    transition: var(--transition);
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    border: 1px solid transparent;
+}
+
+.history-entry:hover {
+    border-color: rgba(var(--primary), 0.2);
+    background: rgba(var(--primary), 0.03);
+}
+
+/* Progress Bars */
+.progress-bar {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    place-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar-nav .btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .history-entry .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .auth-card {
+        margin: 1rem;
+    }
+
+    .analysis-textarea {
+        min-height: 120px;
+    }
+}
+
+/* Animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating-icon {
+    animation: float 3s ease-in-out infinite;
+}/* Add to style.css */
+
+/* Logo Size Fix */
+.logo {
+    width: 40px;  /* Reduced from 48px */
+    height: 40px;
+    transition: transform 0.3s ease;
+}
+
+/* Dark Mode Text Fix */
+[data-bs-theme="dark"] .btn-outline-dark {
+    color: var(--navbar-text) !important;
+    border-color: var(--navbar-text);
+}
+
+[data-bs-theme="dark"] .btn-outline-dark:hover {
+    background-color: var(--primary);
+    color: var(--dark) !important;
+}
+
+/* Optional: Add hover effect to logo */
+.logo:hover {
+    transform: rotate(-15deg) scale(1.1);
+}.navbar {
+    background-color: var(--navbar-bg) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Button Animations */
+.btn-primary {
+    transition: var(--transition) !important;
+    transform: scale(1);
+}
+
+.btn-primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* Analysis Button Size */
+#analyze-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}

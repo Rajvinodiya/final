@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card bg-glass">
+        <div class="card-body p-4">
+            <h2 class="h3 mb-4">Text Analysis</h2>
+
+            <!-- Example Texts -->
+            <div class="mb-4">
+                <p class="text-muted mb-2">Try examples:</p>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button type="button" class="btn btn-outline-primary btn-sm example-btn"
+                            data-text="This product is amazing! Best purchase I've made all year.">
+                        😊 Positive
+                    </button>
+                    <button type="button" class="btn btn-outline-primary btn-sm example-btn"
+                            data-text="Worst experience ever. Never coming back to this store.">
+                        😠 Negative
+                    </button>
+
+                </div>
+            </div>
+
+            <form method="POST" id="analysis-form">
+                <div class="mb-4">
+                    <textarea class="form-control analysis-textarea"
+                              name="text" id="analysis-text"
+                              placeholder="Enter text to analyze..."
+                              minlength="10" maxlength="500" required>{{ text if text }}</textarea>
+                    <div class="text-end mt-2 text-muted small">
+                        <span id="char-count">0/500</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    <i class="bi bi-magic me-2"></i>Analyze
+                </button>
+            </form>
+
+            {% if results %}
+            <div class="mt-5" id="results-section">
+                <div class="alert alert-warning">
+                    <h5><i class="bi bi-gear me-2"></i>Analysis Details</h5>
+                    <ul class="mb-0">
+                        <li>Sentiment: {{ results.sentiment.label|title }}</li>
+                        <li>Emotion adjustments applied based on context</li>
+                    </ul>
+                </div>
+
+                <div class="row g-4 mt-3">
+                    <!-- Sentiment Card -->
+                    <div class="col-md-6">
+                        <div class="card shadow h-100">
+                            <div class="card-body text-center">
+                                <h4 class="card-title mb-3">
+                                    <i class="bi bi-emoji-sunglasses"></i> Sentiment
+                                </h4>
+                                <div class="display-2 mb-3">{{ results.sentiment.emoji }}</div>
+                                <div class="progress" style="height: 30px;">
+                                    <div class="progress-bar bg-primary"
+                                         style="width: {{ results.sentiment.score }}%">
+                                        {{ results.sentiment.score }}%
+                                    </div>
+                                </div>
+                                <h5 class="mt-3">{{ results.sentiment.label|title }}</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emotions Card -->
+                    <div class="col-md-6">
+                        <div class="card shadow h-100">
+                            <div class="card-body">
+                                <h4 class="card-title text-center mb-4">
+                                    <i class="bi bi-heart-pulse"></i> Emotions
+                                </h4>
+                                {% for emotion in results.emotions %}
+                                <div class="emotion-row mb-3 p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <span class="emoji-display fs-4">{{ emotion.emoji }}</span>
+                                            <span class="ms-3">{{ emotion.label|title }}</span>
+                                        </div>
+                                        <div class="progress emotion-bar" style="width: 120px; height: 20px;">
+                                            <div class="progress-bar bg-info"
+                                                 style="width: {{ emotion.score }}%">
+                                                {{ emotion.score }}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const textarea = document.getElementById('analysis-text');
+    const charCount = document.getElementById('char-count');
+
+    // Update character count on input
+    function updateCharCount() {
+        const length = textarea.value.length;
+        charCount.textContent = `${length}/500`;
+    }
+
+    // Initial count
+    updateCharCount();
+
+    // Live updates
+    textarea.addEventListener('input', updateCharCount);
+
+    // Example buttons
+    document.querySelectorAll('.example-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            textarea.value = e.target.dataset.text;
+            updateCharCount();
+            textarea.focus();
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card auth-card shadow bg-glass">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <h2 class="h3 mb-3">Welcome Back</h2>
+                        <p class="text-muted">Sign in to continue</p>
+                    </div>
+
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input type="text" name="username"
+                                    class="form-control {% if 'username' in get_flashed_messages(category_filter=['danger']) %}is-invalid{% endif %}"
+                                    placeholder="Enter your username" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input type="password" name="password"
+                                    class="form-control {% if 'password' in get_flashed_messages(category_filter=['danger']) %}is-invalid{% endif %}"
+                                    placeholder="••••••••" required>
+                                <span class="password-toggle" onclick="togglePassword(this)">
+                                    <i class="bi bi-eye"></i>
+                                </span>
+                            </div>
+                            <div class="invalid-feedback">
+                                {% for message in get_flashed_messages(category_filter=['danger']) %}
+                                    {{ message }}
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3 py-2">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                        </button>
+
+                        <div class="text-center mt-4">
+                            <p class="text-muted">Don't have an account?
+                                <a href="/signup" class="text-primary">Create one</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-card {
+    max-width: 400px;
+    margin: 0 auto;
+}
+.password-toggle {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+}
+</style>
+
+<script>
+function togglePassword(icon) {
+    const input = icon.previousElementSibling;
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    icon.querySelector('i').classList.toggle('bi-eye');
+    icon.querySelector('i').classList.toggle('bi-eye-slash');
+}
+</script>
+{% endblock %}

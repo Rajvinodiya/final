@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card bg-glass">
+    <div class="card-body">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <h2 class="h5 mb-0">Analysis History</h2>
+            <div class="ms-auto d-flex gap-2">
+                <a href="/analysis" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus"></i> New
+                </a>
+                <form method="POST" action="/clear_history">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete ALL history?')">
+                        <i class="bi bi-trash"></i> Clear All
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% if current_user.is_authenticated %}
+            {% if analyses %}
+            <div class="list-group">
+                {% for analysis in analyses %}
+                <div class="list-group-item history-entry hover-shadow">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="w-75">
+                            <a href="{{ url_for('analysis_detail', analysis_id=analysis.id) }}" class="text-decoration-none">
+                                <p class="mb-1 fw-bold text-primary">{{ analysis.text|truncate(80) }}</p>
+                            </a>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <span class="badge
+                                    {% if analysis.results.sentiment.label == 'positive' %}bg-success
+                                    {% elif analysis.results.sentiment.label == 'negative' %}bg-danger
+                                    {% else %}bg-primary{% endif %}">
+                                    {{ analysis.results.sentiment.emoji }}
+                                    {{ analysis.results.sentiment.label|title }}
+                                </span>
+                                {% for emotion in analysis.results.emotions[:2] %}
+                                <span class="badge bg-purple">
+                                    {{ emotion.emoji }} {{ emotion.label|title }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="d-flex align-items-center gap-2">
+                                <small class="text-muted">
+                                    {{ analysis.timestamp.strftime('%b %d %H:%M') }}
+                                </small>
+                                <form method="POST" action="{{ url_for('delete_analysis', analysis_id=analysis.id) }}">
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Delete this analysis?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-clock-history display-4 text-muted"></i>
+                <h3 class="h5 mt-3">No Analysis History</h3>
+                <p class="text-muted">Analyze text to see results here</p>
+            </div>
+            {% endif %}
+        {% else %}
+        <div class="text-center py-5">
+            <i class="bi bi-shield-lock display-4 text-muted"></i>
+            <h3 class="h5 mt-3">Login Required</h3>
+            <p class="text-muted mb-4">Please sign in to view your analysis history</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/login" class="btn btn-primary">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </a>
+                <a href="/signup" class="btn btn-outline-primary">
+                    <i class="bi bi-person-plus me-2"></i>Create Account
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
