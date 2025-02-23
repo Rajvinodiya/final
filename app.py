@@ -7,6 +7,9 @@ from datetime import datetime, timezone
 from sqlalchemy import func
 import re
 import os
+from flask_migrate import Migrate
+
+# After db initialization
 
 # Initialize NLP pipelines
 sentiment_analyzer = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-sentiment-latest")
@@ -46,7 +49,7 @@ class AnalysisHistory(db.Model):
     results = db.Column(db.JSON, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
-
+migrate = Migrate(app, db)
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))
