@@ -14,12 +14,20 @@ emotion_analyzer = pipeline("text-classification", model="SamLowe/roberta-base-g
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['DEBUG'] = True
 app.jinja_env.auto_reload = True
 app.jinja_env.cache = {}
-app.config['SECRET_KEY'] = os.urandom(24).hex()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///vibechecker.db'
+
+# PostgreSQL configuration
+DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///vibechecker.db')
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY', os.urandom(24).hex())
+
+# Disable debug mode in production
+app.config['DEBUG'] = os.environ.get('FLASK_DEBUG', 'False') == 'True'
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -118,21 +126,23 @@ def history():
     if current_user.is_authenticated:
         analyses = AnalysisHistory.query.filter_by(user_id=current_user.id).order_by(AnalysisHistory.timestamp.desc()).all()
     else:
-        analyses = []  # Empty list for non-logged-in users
+        analyses = []
     return render_template('history.html', analyses=analyses)
 
 @app.route('/history/<int:analysis_id>')
 @login_required
 def analysis_detail(analysis_id):
     analysis = AnalysisHistory.query.get_or_404(analysis_id)
-    if analysis.user != current_user: abort(403)
+    if analysis.user != current_user:
+        abort(403)
     return render_template('analysis_detail.html', results=analysis.results, text=analysis.text)
 
 @app.route('/delete_analysis/<int:analysis_id>', methods=['POST'])
 @login_required
 def delete_analysis(analysis_id):
     analysis = AnalysisHistory.query.get_or_404(analysis_id)
-    if analysis.user != current_user: abort(403)
+    if analysis.user != current_user:
+        abort(403)
     db.session.delete(analysis)
     db.session.commit()
     flash('Analysis deleted successfully', 'success')
@@ -159,13 +169,16 @@ def toggle_theme():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated: return redirect(url_for('analysis'))
+    if current_user.is_authenticated:
+        return redirect(url_for('analysis'))
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
         user = User.query.filter(func.lower(User.username) == func.lower(username)).first()
-        if not user: flash('Invalid username', 'danger')
-        elif not check_password_hash(user.password, password): flash('Incorrect password', 'danger')
+        if not user:
+            flash('Invalid username', 'danger')
+        elif not check_password_hash(user.password, password):
+            flash('Incorrect password', 'danger')
         else:
             login_user(user)
             return redirect(url_for('analysis'))
@@ -174,18 +187,24 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if current_user.is_authenticated: return redirect(url_for('analysis'))
+    if current_user.is_authenticated:
+        return redirect(url_for('analysis'))
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
-        if len(username) < 4: flash('Username must be at least 4 characters', 'danger')
+        if len(username) < 4:
+            flash('Username must be at least 4 characters', 'danger')
         elif User.query.filter(func.lower(User.username) == func.lower(username)).first():
             flash('Username already taken', 'danger')
         else:
-            if not re.search(r'[A-Z]', password): flash('Password needs uppercase', 'danger')
-            elif not re.search(r'[a-z]', password): flash('Password needs lowercase', 'danger')
-            elif not re.search(r'\d', password): flash('Password needs number', 'danger')
-            elif not re.search(r'[@$!%*?&]', password): flash('Password needs special character', 'danger')
+            if not re.search(r'[A-Z]', password):
+                flash('Password needs uppercase', 'danger')
+            elif not re.search(r'[a-z]', password):
+                flash('Password needs lowercase', 'danger')
+            elif not re.search(r'\d', password):
+                flash('Password needs number', 'danger')
+            elif not re.search(r'[@$!%*?&]', password):
+                flash('Password needs special character', 'danger')
             else:
                 try:
                     new_user = User(username=username, password=generate_password_hash(password))
@@ -208,5 +227,6 @@ def logout():
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+        if 'sqlite' in app.config['SQLALCHEMY_DATABASE_URI']:
+            db.create_all()
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
